@@ -7,23 +7,22 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SpotifyAPI.Models;
-using static SpotifyAPI.Models.CategoryClass;
+using static SpotifyAPI.Models.RecommendationsClass;
 
 namespace SpotifyAPI.Controllers
 {
-    [Route("category")]
+    [Route("recommendations")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class RecommendationsController : ControllerBase
     {
-        public Categories getNewReleases()
+        public List<Track> getNewReleases()
         {
             TokenClass _Token = new TokenClass();
-
             string token = _Token.getToken();
 
-            string url = "https://api.spotify.com/v1/browse/categories?country=SE&locale=sv_SE&limit=48&offset=5";
+            string url = "https://api.spotify.com/v1/recommendations?limit=40&market=US&seed_genres=rock%2C%20pop%2C%20indie";
             var Authorization = _Token.currentToken;
-
+            
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
             webRequest.Method = "GET";
             webRequest.ContentType = "application/x-www-form-urlencoded";
@@ -32,7 +31,7 @@ namespace SpotifyAPI.Controllers
             webRequest.ContentLength = 0;
             HttpWebResponse resp = (HttpWebResponse)webRequest.GetResponse();
             String json = "";
-            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(CategoryClass));
+            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(RecommendationsClass));
             using (Stream respStr = resp.GetResponseStream())
             {
                 using (StreamReader rdr = new StreamReader(respStr, Encoding.UTF8))
@@ -42,9 +41,9 @@ namespace SpotifyAPI.Controllers
                 }
             }
 
-            var categories = JsonConvert.DeserializeObject<RootObject>(json).categories;
+             var recommendations = JsonConvert.DeserializeObject<Recommendation>(json).tracks;
 
-            return categories;
+            return recommendations;
 
         }
     }

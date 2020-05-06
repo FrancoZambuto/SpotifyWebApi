@@ -39,7 +39,7 @@ namespace SpotifyAPI.Models
             public int width { get; set; }
         }
 
-        public class Item
+        public class Items
         {
             public string album_type { get; set; }
             public List<Artist> artists { get; set; }
@@ -58,13 +58,8 @@ namespace SpotifyAPI.Models
 
         public class Albums
         {
-            public string href { get; set; }
-            public List<Item> items { get; set; }
-            public int limit { get; set; }
-            public string next { get; set; }
-            public int offset { get; set; }
-            public object previous { get; set; }
-            public int total { get; set; }
+            //public string href { get; set; }
+            public List<Items> items { get; set; }
         }
 
         public class RootObject

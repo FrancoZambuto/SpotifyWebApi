@@ -7,21 +7,21 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SpotifyAPI.Models;
-using static SpotifyAPI.Models.CategoryClass;
+using static SpotifyAPI.Models.PlayListsClass;
 
 namespace SpotifyAPI.Controllers
 {
-    [Route("category")]
+    [Route("playlists")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class PlayListsController : ControllerBase
     {
-        public Categories getNewReleases()
+        public Playlists getPlayLists()
         {
             TokenClass _Token = new TokenClass();
 
             string token = _Token.getToken();
 
-            string url = "https://api.spotify.com/v1/browse/categories?country=SE&locale=sv_SE&limit=48&offset=5";
+            string url = "https://api.spotify.com/v1/browse/featured-playlists?country=US&locale=sv_US&timestamp=2020-05-01T09%3A00%3A00&limit=10";
             var Authorization = _Token.currentToken;
 
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -32,7 +32,7 @@ namespace SpotifyAPI.Controllers
             webRequest.ContentLength = 0;
             HttpWebResponse resp = (HttpWebResponse)webRequest.GetResponse();
             String json = "";
-            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(CategoryClass));
+            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(PlayListsClass));
             using (Stream respStr = resp.GetResponseStream())
             {
                 using (StreamReader rdr = new StreamReader(respStr, Encoding.UTF8))
@@ -42,9 +42,9 @@ namespace SpotifyAPI.Controllers
                 }
             }
 
-            var categories = JsonConvert.DeserializeObject<RootObject>(json).categories;
+            var playlists = JsonConvert.DeserializeObject<PlayList>(json).playlists;
 
-            return categories;
+            return playlists;
 
         }
     }

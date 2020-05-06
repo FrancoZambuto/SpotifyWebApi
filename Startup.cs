@@ -28,6 +28,7 @@ namespace SpotifyAPI
         {
             services.AddControllers();
             services.AddCors();
+            services.AddMvc().AddNewtonsoftJson();
 
         }
 
