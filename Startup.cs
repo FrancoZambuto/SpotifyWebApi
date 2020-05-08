@@ -41,7 +41,7 @@ namespace SpotifyAPI
             }
 
             app.UseCors(options =>
-            options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            options.WithOrigins("https://spotifyfront.z13.web.core.windows.net").AllowAnyMethod().AllowAnyHeader());
             //app.UseMvc();
             app.UseHttpsRedirection();
 
